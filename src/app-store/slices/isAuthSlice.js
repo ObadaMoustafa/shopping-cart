@@ -12,5 +12,6 @@ export const isAuthSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { setIsAuth } = isAuthSlice.actions;
+export const getIsAuth = state => state.isAuth;
 
 export default isAuthSlice.reducer;

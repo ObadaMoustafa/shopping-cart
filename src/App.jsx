@@ -1,20 +1,30 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import Navbar from "./components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
-import { useEffect } from "react";
-import { ref, set, update } from "firebase/database";
-import { db } from "./firebase/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setIsAuth } from "./app-store/slices/isAuthSlice";
+import { auth } from "./firebase/firebase";
 
 function App() {
-  useEffect(() => {
-    update(ref(db, "carts"), {
-      productName: "keyboard",
-    });
-  }, []);
+  const dispatch = useDispatch();
+
+  //! Authentication listener
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      console.log(user.uid);
+      dispatch(setIsAuth(true));
+    } else {
+      dispatch(setIsAuth(false));
+    }
+  });
+
   return (
     <Box>
       <Navbar />
-      <Outlet />
+      <Container sx={{ mt: 5 }}>
+        <Outlet />
+      </Container>
     </Box>
   );
 }
