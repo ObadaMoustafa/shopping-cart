@@ -1,23 +1,34 @@
-import { Box, Button, Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import Navbar from "./components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setIsAuth } from "./app-store/slices/isAuthSlice";
-import { auth } from "./firebase/firebase";
+import { auth, db } from "./firebase/firebase";
+import { useEffect } from "react";
+import { onValue, ref } from "firebase/database";
+import { setProducts } from "./app-store/slices/productsSlice";
 
 function App() {
   const dispatch = useDispatch();
 
-  //! Authentication listener
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      console.log(user.uid);
-      dispatch(setIsAuth(true));
-    } else {
-      dispatch(setIsAuth(false));
-    }
-  });
+  useEffect(() => {
+    const starCountRef = ref(db, "products");
+    onValue(starCountRef, snapshot => {
+      const data = snapshot.val();
+      dispatch(setProducts(data));
+    });
+
+    //! Authentication listener
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        dispatch(setIsAuth(true));
+      } else {
+        dispatch(setIsAuth(false));
+      }
+    });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box>

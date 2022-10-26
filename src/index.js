@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import ShoppingCart from "./pages/shopping-cart/ShoppingCart";
+import ProductInfo from "./pages/product-info/ProductInfo";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +22,7 @@ root.render(
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/shopping-cart" element={<ShoppingCart />} />
+            <Route path="/product/:id" element={<ProductInfo />} />
           </Route>
         </Routes>
       </ThemeProvider>

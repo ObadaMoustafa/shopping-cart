@@ -6,13 +6,14 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      state.push(action.payload);
-    },
+    setProducts: (state, action) => action.payload,
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addProduct } = productsSlice.actions;
+export const { setProducts } = productsSlice.actions;
+export const getAllProducts = state => state.products;
+export const getProductById = id => state =>
+  state.products.find(product => product.id === Number(id));
 
 export default productsSlice.reducer;
