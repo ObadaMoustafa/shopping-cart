@@ -35,7 +35,6 @@ function Login() {
       .catch(error => {
         const errorMessage = error.message;
         setErrorMsg(errorMessage);
-        console.log("signing up failed", errorMessage);
       });
   }
 
@@ -46,7 +45,6 @@ function Login() {
       })
       .catch(error => {
         const errorMessage = error.message;
-        console.log("signing up failed", errorMessage);
         // ..
       });
   }
