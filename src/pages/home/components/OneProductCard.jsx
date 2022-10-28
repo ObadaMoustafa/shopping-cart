@@ -22,6 +22,11 @@ function OneProductCard({ product }) {
     await wait(400);
     navigate(`/product/${id}`);
   }
+
+  function goToShoppingCartPage() {
+    navigate("/shopping-cart");
+  }
+
   return (
     <Card
       sx={{
@@ -53,7 +58,7 @@ function OneProductCard({ product }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <IconButton>
+        <IconButton onClick={goToShoppingCartPage}>
           <AddShoppingCartIcon fontSize="large" color="secondary" />
         </IconButton>
       </CardActions>

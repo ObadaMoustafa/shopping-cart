@@ -11,6 +11,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import ShoppingCart from "./pages/shopping-cart/ShoppingCart";
 import ProductInfo from "./pages/product-info/ProductInfo";
+import ProtectedRoute from "./pages/protected-route/ProtectedRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,8 +21,22 @@ root.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/shopping-cart" element={<ShoppingCart />} />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute isLoginPage>
+                  <Login />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shopping-cart"
+              element={
+                <ProtectedRoute>
+                  <ShoppingCart />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/product/:id" element={<ProductInfo />} />
           </Route>
         </Routes>
