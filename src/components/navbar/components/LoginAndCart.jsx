@@ -14,6 +14,10 @@ function LoginAndCart() {
   function Logout() {
     signOut(auth).then(() => navigate("/login"));
   }
+
+  function goToShoppingCartPage(){
+    navigate('/shopping-cart')
+  }
   return (
     <Grid container alignItems="center" height={100} spacing={3}>
       <Grid item>
@@ -28,7 +32,7 @@ function LoginAndCart() {
         )}
       </Grid>
       <Grid item>
-        <IconButton aria-label="cart" size="large">
+        <IconButton aria-label="cart" size="large" onClick={goToShoppingCartPage}>
           <Badge badgeContent={90} color="warning">
             <LocalMallIcon color="secondary" fontSize="large" />
           </Badge>
