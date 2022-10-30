@@ -6,17 +6,19 @@ import { useSelector } from "react-redux";
 import { getIsAuth } from "../../../app-store/slices/isAuthSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../firebase/firebase";
+import { totalCartItems } from "../../../app-store/slices/shoppingCartSlice";
 
 function LoginAndCart() {
   //write code here
   const isAuth = useSelector(getIsAuth);
   const navigate = useNavigate();
+  const cartItemsQuantity = useSelector(totalCartItems);
   function Logout() {
     signOut(auth).then(() => navigate("/login"));
   }
 
-  function goToShoppingCartPage(){
-    navigate('/shopping-cart')
+  function goToShoppingCartPage() {
+    navigate("/shopping-cart");
   }
   return (
     <Grid container alignItems="center" height={100} spacing={3}>
@@ -32,8 +34,12 @@ function LoginAndCart() {
         )}
       </Grid>
       <Grid item>
-        <IconButton aria-label="cart" size="large" onClick={goToShoppingCartPage}>
-          <Badge badgeContent={90} color="warning">
+        <IconButton
+          aria-label="cart"
+          size="large"
+          onClick={goToShoppingCartPage}
+        >
+          <Badge badgeContent={cartItemsQuantity} color="warning">
             <LocalMallIcon color="secondary" fontSize="large" />
           </Badge>
         </IconButton>

@@ -6,8 +6,9 @@ import { useDispatch } from "react-redux";
 import { setIsAuth } from "./app-store/slices/isAuthSlice";
 import { auth, db } from "./firebase/firebase";
 import { useEffect } from "react";
-import { onValue, ref } from "firebase/database";
+import { child, get, onValue, ref } from "firebase/database";
 import { setProducts } from "./app-store/slices/productsSlice";
+import { setOrFirstAddToCart } from "./app-store/slices/shoppingCartSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,8 +24,22 @@ function App() {
     onAuthStateChanged(auth, user => {
       if (user) {
         dispatch(setIsAuth(true));
+        // initialize the cart in redux
+        const dbRef = ref(db);
+        get(child(dbRef, `users/${user.uid}/cart`))
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              dispatch(setOrFirstAddToCart(snapshot.val()));
+            } else {
+              dispatch(setOrFirstAddToCart());
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
       } else {
         dispatch(setIsAuth(false));
+        dispatch(setOrFirstAddToCart());
       }
     });
     // eslint-disable-next-line
@@ -33,7 +48,7 @@ function App() {
   return (
     <Box>
       <Navbar />
-      <Container sx={{ mt: 5 }}>
+      <Container sx={{ mt: 5, pb: 5 }}>
         <Outlet />
       </Container>
     </Box>
