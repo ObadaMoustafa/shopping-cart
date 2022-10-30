@@ -1,6 +1,6 @@
 import { Button, CardMedia, Grid, Rating, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../../app-store/slices/productsSlice";
@@ -11,6 +11,7 @@ import {
 } from "../../app-store/slices/shoppingCartSlice";
 import { auth } from "../../firebase/firebase";
 import { getIsAuth } from "../../app-store/slices/isAuthSlice";
+import { cleanUpProgress } from "../../app-store/slices/progressSlice";
 
 function ProductInfo() {
   //write code here
@@ -20,6 +21,11 @@ function ProductInfo() {
   const isInCart = useSelector(isItemInCart(Number(id)));
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => dispatch(cleanUpProgress());
+  }, []);
+
   let productDetails = <></>;
   if (product) {
     function addToCart() {

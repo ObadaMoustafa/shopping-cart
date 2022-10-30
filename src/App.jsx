@@ -2,26 +2,39 @@ import { Box, Container } from "@mui/material";
 import Navbar from "./components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsAuth } from "./app-store/slices/isAuthSlice";
 import { auth, db } from "./firebase/firebase";
 import { useEffect } from "react";
 import { child, get, onValue, ref } from "firebase/database";
 import { setProducts } from "./app-store/slices/productsSlice";
 import { setOrFirstAddToCart } from "./app-store/slices/shoppingCartSlice";
+import {
+  getProgress,
+  setError,
+  setIsLoading,
+} from "./app-store/slices/progressSlice";
+import RenderError from "./components/RenderError";
+import { wait } from "./utils/wait";
+import Spinner from "./components/Spinner";
 
 function App() {
   const dispatch = useDispatch();
+  const { error, isLoading } = useSelector(getProgress);
 
   useEffect(() => {
     const starCountRef = ref(db, "products");
-    onValue(starCountRef, snapshot => {
+    dispatch(setIsLoading(true));
+    onValue(starCountRef, async snapshot => {
       const data = snapshot.val();
       dispatch(setProducts(data));
+      dispatch(setIsLoading(false));
     });
 
     //! Authentication listener
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
+      dispatch(setIsLoading(true));
+      await wait(1000);
       if (user) {
         dispatch(setIsAuth(true));
         // initialize the cart in redux
@@ -34,12 +47,14 @@ function App() {
               dispatch(setOrFirstAddToCart());
             }
           })
+          .then(() => dispatch(setIsLoading(false)))
           .catch(error => {
-            console.error(error);
+            dispatch(setError(error.message));
           });
       } else {
         dispatch(setIsAuth(false));
         dispatch(setOrFirstAddToCart());
+        dispatch(setIsLoading(false));
       }
     });
     // eslint-disable-next-line
@@ -49,6 +64,8 @@ function App() {
     <Box>
       <Navbar />
       <Container sx={{ mt: 5, pb: 5 }}>
+        {error && <RenderError errorMsg={error} />}
+        {isLoading && <Spinner />}
         <Outlet />
       </Container>
     </Box>

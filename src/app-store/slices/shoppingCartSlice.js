@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ref, set } from "firebase/database";
 import { db } from "../../firebase/firebase";
+import { setError } from "./progressSlice";
 
 const initialState = [];
 
@@ -34,7 +35,7 @@ export const addToCartAsync = (product, uid) => (dispatch, getState) => {
   valueToSet.push(productToSet);
   set(ref(db, `users/${uid}/cart`), valueToSet)
     .then(() => dispatch(setOrFirstAddToCart(valueToSet)))
-    .catch(console.log);
+    .catch(err => dispatch(setError(err.message)));
 };
 
 export const deleteItemFromCart = (id, uid) => (dispatch, getState) => {
@@ -43,7 +44,7 @@ export const deleteItemFromCart = (id, uid) => (dispatch, getState) => {
   state.splice(productIndex, 1);
   set(ref(db, `users/${uid}/cart`), state)
     .then(() => dispatch(setOrFirstAddToCart(state)))
-    .catch(console.log);
+    .catch(err => dispatch(setError(err.message)));
 };
 
 export const addExtraItemAsync = (id, uid) => (dispatch, getState) => {
@@ -55,7 +56,7 @@ export const addExtraItemAsync = (id, uid) => (dispatch, getState) => {
 
   set(ref(db, `users/${uid}/cart/${productIndex}`), product)
     .then(() => dispatch(minusOrAddExtraItem({ productIndex, product })))
-    .catch(console.log);
+    .catch(err => dispatch(setError(err.message)));
 };
 
 export const minusItemAsync = (id, uid) => (dispatch, getState) => {
@@ -67,7 +68,7 @@ export const minusItemAsync = (id, uid) => (dispatch, getState) => {
 
   set(ref(db, `users/${uid}/cart/${productIndex}`), product)
     .then(() => dispatch(minusOrAddExtraItem({ productIndex, product })))
-    .catch(console.log);
+    .catch(err => dispatch(setError(err.message)));
 };
 
 // ------------------ thunk ------------------ \\

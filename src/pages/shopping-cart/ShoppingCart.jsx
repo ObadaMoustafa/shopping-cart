@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { cleanUpProgress } from "../../app-store/slices/progressSlice";
 import CartItem from "./components/CartItem";
 
 function ShoppingCart() {
@@ -9,6 +10,11 @@ function ShoppingCart() {
   const totalPrice = shoppingCart
     .reduce((accumulator, element) => accumulator + element.totalPrice, 0)
     .toFixed(2);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => dispatch(cleanUpProgress());
+  }, []);
   return (
     <>
       {!!shoppingCart.length ? (

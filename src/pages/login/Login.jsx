@@ -3,8 +3,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  cleanUpProgress,
+  getProgress,
+  setError,
+} from "../../app-store/slices/progressSlice";
 import RenderError from "../../components/RenderError";
 import { auth } from "../../firebase/firebase";
 
@@ -12,16 +18,17 @@ function Login() {
   //write code here
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState(null);
+  const { isLoading, error } = useSelector(getProgress);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   function changeEmail(e) {
     setEmail(e.target.value);
-    setErrorMsg(null);
+    dispatch(setError(null));
   }
   function changePassword(e) {
     setPassword(e.target.value);
-    setErrorMsg(null);
+    dispatch(setError(null));
   }
 
   function login(e) {
@@ -32,7 +39,7 @@ function Login() {
       })
       .catch(error => {
         const errorMessage = error.message;
-        setErrorMsg(errorMessage);
+        dispatch(setError(errorMessage));
       });
   }
 
@@ -43,12 +50,16 @@ function Login() {
       })
       .catch(error => {
         const errorMessage = error.message;
+        dispatch(setError(errorMessage));
         // ..
       });
   }
+
+  useEffect(() => {
+    return () => dispatch(cleanUpProgress());
+  }, []);
   return (
     <Box sx={{ width: { xs: "100%", md: "50%" }, mx: "auto" }}>
-      {errorMsg && <RenderError errorMsg={errorMsg} />}
       <form onSubmit={login}>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
