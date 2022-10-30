@@ -1,17 +1,35 @@
 import { Button, CardMedia, Grid, Rating, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../../app-store/slices/productsSlice";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import {
+  addToCartAsync,
+  isItemInCart,
+} from "../../app-store/slices/shoppingCartSlice";
+import { auth } from "../../firebase/firebase";
+import { getIsAuth } from "../../app-store/slices/isAuthSlice";
 
 function ProductInfo() {
   //write code here
   const { id } = useParams();
   const product = useSelector(getProductById(id));
+  const isAuth = useSelector(getIsAuth);
+  const isInCart = useSelector(isItemInCart(Number(id)));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   let productDetails = <></>;
   if (product) {
+    function addToCart() {
+      if (isAuth) {
+        dispatch(addToCartAsync(product, auth.currentUser.uid));
+        return;
+      }
+
+      navigate("/login");
+    }
     const { category, description, image, price, rating, title } = product;
     productDetails = (
       <Box>
@@ -44,12 +62,14 @@ function ProductInfo() {
               />
               <Box>
                 <Button
+                  disabled={isInCart}
                   variant="contained"
                   startIcon={<AddShoppingCartIcon fontSize="small" />}
                   size="large"
                   sx={{ p: "5px 25px", fontSize: "20px" }}
+                  onClick={addToCart}
                 >
-                  Add to Cart
+                  {isInCart ? "Already in Cart" : "Add to Cart"}
                 </Button>
               </Box>
             </Stack>
