@@ -24,6 +24,7 @@ function ProductInfo() {
 
   useEffect(() => {
     return () => dispatch(cleanUpProgress());
+    // eslint-disable-next-line
   }, []);
 
   let productDetails = <></>;

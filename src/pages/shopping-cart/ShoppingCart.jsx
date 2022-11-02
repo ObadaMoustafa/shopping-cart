@@ -14,6 +14,7 @@ function ShoppingCart() {
 
   useEffect(() => {
     return () => dispatch(cleanUpProgress());
+    // eslint-disable-next-line
   }, []);
   return (
     <>
