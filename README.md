@@ -1,7 +1,7 @@
 # shopping cart from scratch
 This is a lesson on Youtube You can see how to build this project from scratch from [here](https://youtube.com/playlist?list=PLXf60-isebOGYVtat5ob7nXT50V-p8Se2) 
 
-## [Demo]()
+## [Demo](https://dev-mentor-shopping-cart.netlify.app/)
 ## Why I follow this playlist ?
 - In this Playlist we gonna build a complete project about shopping cart.
 - We will use firebase realtime database to show our product and to control our shopping cart.
