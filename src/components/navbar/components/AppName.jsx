@@ -1,6 +1,6 @@
-import { Typography } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Typography } from '@mui/material';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function AppName() {
   //write code here
@@ -13,7 +13,7 @@ function AppName() {
         color="text.primary"
         fontWeight={800}
       >
-        Shopping Online
+        Shopping Cart
       </Typography>
     </Link>
   );

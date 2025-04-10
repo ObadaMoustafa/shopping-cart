@@ -5,27 +5,27 @@ import {
   IconButton,
   Stack,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ConfirmationMsg from "../../../components/ConfirmationMsg";
-import { useDispatch } from "react-redux";
+} from '@mui/material';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmationMsg from '../../../components/ConfirmationMsg';
+import { useDispatch } from 'react-redux';
 import {
   addExtraItemAsync,
   deleteItemFromCart,
   minusItemAsync,
-} from "../../../app-store/slices/shoppingCartSlice";
-import { auth } from "../../../firebase/firebase";
+} from '../../../app-store/slices/shoppingCartSlice';
+import { auth } from '../../../firebase/firebase';
 
 function CartItem({ product }) {
   //write code here
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { image, totalPrice, id, items } = product;
-  const uid = auth.currentUser.uid;
   const dispatch = useDispatch();
+  const uid = auth?.currentUser?.uid;
   function minusOneItem() {
     if (items === 1) {
       showHideDeleteConfirmation();
@@ -33,12 +33,15 @@ function CartItem({ product }) {
     }
     dispatch(minusItemAsync(id, uid));
   }
+
   function addOneItem() {
     dispatch(addExtraItemAsync(id, uid));
   }
+
   function showHideDeleteConfirmation() {
-    setShowDeleteConfirmation(prev => !prev);
+    setShowDeleteConfirmation((prev) => !prev);
   }
+
   function deleteItem() {
     dispatch(deleteItemFromCart(id, uid));
   }
@@ -48,7 +51,7 @@ function CartItem({ product }) {
         p: 5,
         borderStartEndRadius: 20,
         borderEndStartRadius: 20,
-        width: { xs: "100%", md: "50%" },
+        width: { xs: '100%', md: '50%' },
         maxHeight: 300,
       }}
     >
@@ -60,8 +63,8 @@ function CartItem({ product }) {
               component="img"
               image={image}
               sx={{
-                objectPosition: "center",
-                objectFit: "contain",
+                objectPosition: 'center',
+                objectFit: 'contain',
                 height: 100,
               }}
             />

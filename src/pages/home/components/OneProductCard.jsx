@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardActionArea,
@@ -9,18 +9,18 @@ import {
   IconButton,
   Rating,
   Typography,
-} from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import { useNavigate } from "react-router-dom";
-import { wait } from "../../../utils/wait";
-import { useDispatch, useSelector } from "react-redux";
-import { getIsAuth } from "../../../app-store/slices/isAuthSlice";
+} from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { useNavigate } from 'react-router-dom';
+import { wait } from '../../../utils/wait';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIsAuth } from '../../../app-store/slices/isAuthSlice';
 import {
   addToCartAsync,
   isItemInCart,
-} from "../../../app-store/slices/shoppingCartSlice";
-import { auth } from "../../../firebase/firebase";
+} from '../../../app-store/slices/shoppingCartSlice';
+import { auth } from '../../../firebase/firebase';
 function OneProductCard({ product }) {
   //write code here
   const { title, price, rating, image, id } = product;
@@ -29,12 +29,12 @@ function OneProductCard({ product }) {
   const isAuth = useSelector(getIsAuth);
   const isInCart = useSelector(isItemInCart(id));
   async function goToProductInfoPage() {
-    await wait(400);
+    await wait(300);
     navigate(`/product/${id}`);
   }
 
   function goToShoppingCartPage() {
-    navigate("/shopping-cart");
+    navigate('/shopping-cart');
   }
 
   function addToShoppingCart() {
@@ -50,7 +50,7 @@ function OneProductCard({ product }) {
     <Card
       sx={{
         height: { xs: 300, sm: 360 },
-        borderRadius: "25px 0",
+        borderRadius: '25px 0',
       }}
     >
       <CardActionArea onClick={goToProductInfoPage}>
@@ -65,7 +65,7 @@ function OneProductCard({ product }) {
           component="img"
           src={image}
           sx={{
-            objectFit: "contain",
+            objectFit: 'contain',
             height: { xs: 100, sm: 150 },
           }}
         />

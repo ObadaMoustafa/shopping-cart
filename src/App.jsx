@@ -1,46 +1,42 @@
-import { Box, Container } from "@mui/material";
-import Navbar from "./components/navbar/Navbar";
-import { Outlet } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsAuth } from "./app-store/slices/isAuthSlice";
-import { auth, db } from "./firebase/firebase";
-import { useEffect } from "react";
-import { child, get, onValue, ref } from "firebase/database";
-import { setProducts } from "./app-store/slices/productsSlice";
-import { setOrFirstAddToCart } from "./app-store/slices/shoppingCartSlice";
+import { Box, Container } from '@mui/material';
+import Navbar from './components/navbar/Navbar';
+import { Outlet } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsAuth } from './app-store/slices/isAuthSlice';
+import { auth, db } from './firebase/firebase';
+import { useEffect } from 'react';
+import { child, get, onValue, ref } from 'firebase/database';
+import { setProducts } from './app-store/slices/productsSlice';
+import { setOrFirstAddToCart } from './app-store/slices/shoppingCartSlice';
 import {
   getProgress,
   setError,
   setIsLoading,
-} from "./app-store/slices/progressSlice";
-import RenderError from "./components/RenderError";
-import { wait } from "./utils/wait";
-import Spinner from "./components/Spinner";
+} from './app-store/slices/progressSlice';
+import RenderError from './components/RenderError';
+import Spinner from './components/Spinner';
 
 function App() {
   const dispatch = useDispatch();
   const { error, isLoading } = useSelector(getProgress);
 
   useEffect(() => {
-    const starCountRef = ref(db, "products");
+    const starCountRef = ref(db, 'products');
     dispatch(setIsLoading(true));
-    onValue(starCountRef, async snapshot => {
+    onValue(starCountRef, async (snapshot) => {
       const data = snapshot.val();
       dispatch(setProducts(data));
-      dispatch(setIsLoading(false));
     });
 
     //! Authentication listener
-    onAuthStateChanged(auth, async user => {
-      dispatch(setIsLoading(true));
-      await wait(1000);
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         dispatch(setIsAuth(true));
         // initialize the cart in redux
         const dbRef = ref(db);
         get(child(dbRef, `users/${user.uid}/cart`))
-          .then(snapshot => {
+          .then((snapshot) => {
             if (snapshot.exists()) {
               dispatch(setOrFirstAddToCart(snapshot.val()));
             } else {
@@ -48,7 +44,7 @@ function App() {
             }
           })
           .then(() => dispatch(setIsLoading(false)))
-          .catch(error => {
+          .catch((error) => {
             dispatch(setError(error.message));
           });
       } else {

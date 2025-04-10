@@ -1,22 +1,22 @@
-import { Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-} from "firebase/auth";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+} from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   cleanUpProgress,
   setError,
   setIsLoading,
-} from "../../app-store/slices/progressSlice";
-import { auth } from "../../firebase/firebase";
+} from '../../app-store/slices/progressSlice';
+import { auth } from '../../firebase/firebase';
 
 function Login() {
   //write code here
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,22 +34,22 @@ function Login() {
     dispatch(setIsLoading(true));
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        navigate("/");
+        navigate('/');
       })
-      .catch(error => {
+      .catch((error) => {
         const errorMessage = error.message;
         dispatch(setError(errorMessage));
-        dispatch(setIsLoading(false));
-      });
+      })
+      .finally(() => dispatch(setIsLoading(false)));
   }
 
   function signUp() {
     dispatch(setIsLoading(true));
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        navigate("/");
+        navigate('/');
       })
-      .catch(error => {
+      .catch((error) => {
         const errorMessage = error.message;
         dispatch(setError(errorMessage));
         dispatch(setIsLoading(false));
@@ -62,7 +62,7 @@ function Login() {
     // eslint-disable-next-line
   }, []);
   return (
-    <Box sx={{ width: { xs: "100%", md: "50%" }, mx: "auto" }}>
+    <Box sx={{ width: { xs: '100%', md: '50%' }, mx: 'auto' }}>
       <form onSubmit={login}>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
