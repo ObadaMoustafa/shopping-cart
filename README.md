@@ -1,5 +1,6 @@
-# shopping cart from scratch
-This is a lesson on Youtube You can see how to build this project from scratch from [here](https://youtube.com/playlist?list=PLXf60-isebOGYVtat5ob7nXT50V-p8Se2) 
+# Shopping Cart
+[Presentation for CS50](https://youtu.be/CVT3GlA19mQ)
+
 
 ## [Demo](https://dev-mentor-shopping-cart.netlify.app/)
 ## Why I follow this playlist ?
